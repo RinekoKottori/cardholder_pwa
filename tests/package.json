@@ -7,18 +7,18 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:front": "cross-env HEADLESS=true npx vitest --config tests/front/vitest.front.config.ts",
+    "test:back": "npx vitest --config vitest.back.config.ts"
   },
   "author": "Rina Savina",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "^1.57.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
-    "@vitest/coverage-v8": "^4.0.13",
-    "@vitest/ui": "^4.0.13",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -27,5 +27,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.13"
+  },
+  "dependencies": {
+    "@vitest/browser-playwright": "^4.0.14",
+    "dotenv": "^17.2.3"
   }
 }

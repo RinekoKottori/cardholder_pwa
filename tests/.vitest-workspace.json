@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "root": "tests/front",
+      "config": "tests/front/vitest.front.config.ts"
+    },
+    {
+      "root": "tests/back",
+      "config": "tests/back/vitest.back.config.ts"
+    }
+  ]
+}
