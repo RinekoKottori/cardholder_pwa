@@ -1,15 +1,18 @@
 import { BasePage } from "../_shared/base.page";
 export enum EAuthLocators {
-  USER_NAME_INPUT = "[ng-reflect-id='login_username']",
-  USER_PASSWORD_INPUT = "[ng-reflect-id='password']",
+  TITLE = "[class^='auth-form'] > [h1]",
+  USER_NAME_INPUT = "[id='login_username']",
+  USER_PASSWORD_INPUT = "[id='password']",
   SUBMIT_BUTTON = "[type='submit']",
   OPTINAL_BUTTONS = "[type='button']",
+  LOGIN_SUCCESS = "[]",
+  AUTH_ERROR = "[class='mat-snack-bar-container-live-2']",
 }
 
 /* path: /auth */
 
 export class AuthPage extends BasePage {
- readonly path = "/auth";
+  readonly path = "/auth";
 
   override async open() {
     await this.page.goto(this.url);
@@ -25,7 +28,7 @@ export class AuthPage extends BasePage {
     return page.locator(EAuthLocators.SUBMIT_BUTTON);
   }
 
-  get noAccountLink() {
+  get registerLink() {
     return page
       .locator(EAuthLocators.OPTINAL_BUTTONS)
       .getByText("Еще нет аккаунта?");
@@ -35,5 +38,18 @@ export class AuthPage extends BasePage {
     return page
       .locator(EAuthLocators.OPTINAL_BUTTONS)
       .getByText("Восстановить пароль");
+  }
+
+  get title() {
+    return page.locator(EAuthLocators.TITLE);
+  }
+
+  get loginSuccess() {
+    return page.locator(EAuthLocators.LOGIN_SUCCESS);
+
+  }
+
+  get authError() {
+    return page.locator(EAuthLocators.AUTH_ERROR);
   }
 }
