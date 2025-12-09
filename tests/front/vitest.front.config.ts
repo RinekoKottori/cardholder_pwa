@@ -8,11 +8,20 @@ dotenv.config({ path: path.resolve(__dirname, "../.env.test") });
 export default defineConfig({
   root: __dirname,
   test: {
-    include: ["**/*.test.ts"],
+    environment: "browser",
+    include: ["tests/front/**/*.test.ts"],
     setupFiles: [path.resolve(__dirname, "vitest.setup.ts")],
     browser: {
-      provider: playwright(),
-      instances: [{ browser: "chromium" }],
+      provider: playwright({
+        launchOptions: {
+          headless: process.env.HEADLESS !== "false",
+        },
+      }),
+      instances: [
+        {
+          browser: "chromium",
+        },
+      ],
     },
     globals: true,
     reporters: ["default", "junit"],

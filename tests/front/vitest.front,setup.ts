@@ -2,14 +2,22 @@ import { beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import { chromium, Browser } from "@playwright/test";
 import dotenv from "dotenv";
 import path from "path";
+import waitOn from "wait-on";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env.test") });
+
+export default async () => {
+  await waitOn({
+    resources: ["http://localhost/auth"],
+    timeout: 60000,
+    interval: 500,
+  });
+};
 
 let browser: Browser;
 
 beforeAll(() => {
-  console.log("BASE_URL:", process.env.BASE_URL);
-  console.log("HEADLESS:", process.env.HEADLESS);
+
 });
 
 beforeEach(async () => {
