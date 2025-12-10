@@ -8,10 +8,7 @@ export abstract class BasePage {
   protected readonly page: Page;
   abstract readonly path: string;
 
-  protected readonly baseUrl =
-    process.env.BASE_URL && process.env.BASE_URL !== "/"
-      ? process.env.BASE_URL
-      : "http://localhost:4207";
+  protected readonly baseUrl = process.env.URL;
 
   constructor(page: Page) {
     this.page = page;
