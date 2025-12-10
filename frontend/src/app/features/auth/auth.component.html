@@ -48,6 +48,7 @@
       <button
         mat-button
         routerLink="/register"
+        data-testId="register-link"
         [disabled]="isLoading() || !allowRegistration()"
         type="button">
         <mat-icon>person_add</mat-icon>
@@ -61,6 +62,7 @@
       <button
         mat-button
         routerLink="/password-recovery/request"
+        data-testId="password-recovery-link"
         [disabled]="isLoading() || smtpDisabled()"
         type="button">
         <mat-icon>error</mat-icon>

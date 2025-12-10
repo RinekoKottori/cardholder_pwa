@@ -72,6 +72,7 @@
     <section class="register-component-form-buttons">
       <button
         mat-flat-button
+        data-testId="regisetry-button"
         type="submit"
         [disabled]="isLoading()">
         {{ 'REGISTER.SIGNUP' | translate }}
@@ -84,6 +85,7 @@
       </button>
       <button
         mat-button
+        data-testId="already-have-account-link"
         routerLink="/auth"
         type="button"
         [disabled]="isLoading()">
