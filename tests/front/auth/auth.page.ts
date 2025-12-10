@@ -4,8 +4,8 @@ export enum EAuthLocators {
   USER_NAME_INPUT = "[id='login_username']",
   USER_PASSWORD_INPUT = "[id='password']",
   SUBMIT_BUTTON = "[type='submit']",
-  OPTINAL_BUTTONS = "[type='button']",
-  LOGIN_SUCCESS = "[]",
+  REGISTER_LINK = "[data-testId='register-link']",
+  RECOVERY_PASSWORD_LINK = "[data-testId='password-recovery-link']",
   AUTH_ERROR = "[class='mat-snack-bar-container-live-2']",
 }
 
@@ -29,24 +29,15 @@ export class AuthPage extends BasePage {
   }
 
   get registerLink() {
-    return page
-      .locator(EAuthLocators.OPTINAL_BUTTONS)
-      .getByText("Еще нет аккаунта?");
+    return page.locator(EAuthLocators.REGISTER_LINK);
   }
 
   get passwordRecoveryLink() {
-    return page
-      .locator(EAuthLocators.OPTINAL_BUTTONS)
-      .getByText("Восстановить пароль");
+    return page.locator(EAuthLocators.RECOVERY_PASSWORD_LINK);
   }
 
   get title() {
     return page.locator(EAuthLocators.TITLE);
-  }
-
-  get loginSuccess() {
-    return page.locator(EAuthLocators.LOGIN_SUCCESS);
-
   }
 
   get authError() {
