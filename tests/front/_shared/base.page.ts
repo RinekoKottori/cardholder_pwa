@@ -11,7 +11,7 @@ export abstract class BasePage {
   protected readonly baseUrl =
     process.env.BASE_URL && process.env.BASE_URL !== "/"
       ? process.env.BASE_URL
-      : "http://localhost:80";
+      : "http://localhost:4207";
 
   constructor(page: Page) {
     this.page = page;
