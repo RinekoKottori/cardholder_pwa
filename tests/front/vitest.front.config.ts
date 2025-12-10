@@ -3,15 +3,15 @@ import { playwright } from "@vitest/browser-playwright";
 import path from "path";
 import dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(__dirname, "../.env.test") });
+dotenv.config({ path: path.resolve(__dirname, "..", ".env.test") });
 
 export default defineConfig({
   root: __dirname,
   test: {
-    environment: "browser",
     include: ["tests/front/**/*.test.ts"],
     setupFiles: [path.resolve(__dirname, "vitest.setup.ts")],
     browser: {
+      enabled: true,
       provider: playwright({
         launchOptions: {
           headless: process.env.HEADLESS !== "false",
