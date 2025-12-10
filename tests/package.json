@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
+    "test": "npm run test:front && npm run test:back",
     "test:front": "cross-env HEADLESS=true npx vitest --config tests/front/vitest.front.config.ts",
     "test:back": "npx vitest --config vitest.back.config.ts"
   },
