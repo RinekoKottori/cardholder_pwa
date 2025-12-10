@@ -3,7 +3,9 @@ import { describe, beforeEach, it, expect } from "vitest";
 import { AuthPage } from "./auth.page";
 import { expect as pwExpect } from "@playwright/test";
 import { CardsPage } from "../cards/cards.page";
-
+import { loginUser } from "../_shared/credits";
+import { RegistrationrPage } from "../registration/registration.page";
+import { RecoveryPage } from "../recovery/recovery.page";
 
 describe("Auth page ", () => {
   let authPage: AuthPage;
@@ -34,7 +36,7 @@ describe("Auth page ", () => {
     pwExpect(authPage.passwordRecoveryLink).toBeVisible();
   });
 
-  it("should login", async () => {
+  it("click on login button with valid credentials should login", async () => {
     const cardsPage = new CardsPage(page);
 
     await page.route("**/api/token*", (route) => {
@@ -43,7 +45,7 @@ describe("Auth page ", () => {
       });
     });
 
-    await authPage.login("Frodo", "Beggins");
+    await authPage.login(loginUser.username, loginUser.password);
 
     pwExpect(page).toHaveURL(cardsPage.url);
   });
@@ -51,9 +53,10 @@ describe("Auth page ", () => {
   it("if user is not registered and try to login should be printed the error", async () => {
     const requestPromise = page.waitForRequest("**/api/token*");
 
-    await authPage.login("Frodo", "Beggins");
+    await authPage.login(loginUser.username, loginUser.password);
 
     const req = await requestPromise;
+
 
     const reqBodyData = req.postData();
 
@@ -67,5 +70,21 @@ describe("Auth page ", () => {
     pwExpect(reqBodyData).toContain("Beggins");
 
     pwExpect(authPage.authError).toBeVisible;
+  });
+
+  it("click on new authorization button should redirect to new authorization page", async () => {
+    const registerPage = new RegistrationrPage(page);
+
+    await authPage.registerLink.click();
+
+    pwExpect(page).toHaveURL(registerPage.url);
+  });
+
+  it("click on recovery button shold redirect to recovery page", async () => {
+    const recoveryPage = new RecoveryPage(page);
+
+    await authPage.passwordRecoveryLink.click();
+    
+    pwExpect(page).toHaveURL(recoveryPage.url);
   });
 });
