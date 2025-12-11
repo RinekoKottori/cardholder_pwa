@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, "..", ".env.test") });
 export default defineConfig({
   root: __dirname,
   test: {
-    include: ["tests/front/**/*.test.ts"],
+    include: ["**/*.test.ts"],
     setupFiles: [path.resolve(__dirname, "vitest.setup.ts")],
     browser: {
       enabled: true,
