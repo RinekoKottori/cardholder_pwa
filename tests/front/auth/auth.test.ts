@@ -1,5 +1,5 @@
-import "../vitest.front,setup";
-import { describe, beforeEach, it, expect } from "vitest";
+import "../vitest.front.setup";
+import { describe, beforeEach, it } from "vitest";
 import { AuthPage } from "./auth.page";
 import { expect as pwExpect } from "@playwright/test";
 import { CardsPage } from "../cards/cards.page";
