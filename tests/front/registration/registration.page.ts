@@ -46,11 +46,11 @@ export class RegistrationrPage extends BasePage {
     return this.page.locator(ERegistrationLocators.EXIST_ACCOUNT_LINK);
   }
 
-  async register(username: string, email: string, password: string) {
+  async register(username: string, email: string, password: string,  passwordConfirm: string) {
     await this.emailInput.fill(email);
     await this.userNameInput.fill(username);
     await this.passwordInput.fill(password);
-    await this.confirmPasswordInput.fill(password);
+    await this.confirmPasswordInput.fill(passwordConfirm);
     await this.registerButton.click();
   }
 }
