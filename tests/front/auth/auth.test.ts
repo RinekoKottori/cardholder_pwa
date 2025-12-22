@@ -4,6 +4,7 @@ import { AuthPage } from "./auth.page";
 import { expect as pwExpect } from "@playwright/test";
 import { CardsPage } from "../cards/cards.page";
 import { loginUser } from "../_shared/credits";
+import { responseRegisterOwner } from "../_shared/mock_responses";
 import { RegistrationrPage } from "../registration/registration.page";
 import { RecoveryPage } from "../recovery/recovery.page";
 
@@ -39,13 +40,23 @@ describe("Auth page ", () => {
   it("click on login button with valid credentials should login", async () => {
     const cardsPage = new CardsPage(page);
 
+    /* Imitated login response */
     await page.route("**/api/token*", (route) => {
       route.fulfill({
         status: 200,
       });
     });
 
-    await authPage.login(loginUser.username, loginUser.password);
+    /* Imitated login response */
+    await page.route("**/api/user*", (route) => {
+      route.fulfill({
+        status: 201,
+        contentType: "application/json",
+        body: JSON.stringify(responseRegisterOwner),
+      });
+    });
+
+    await authPage.login(loginUser.userName, loginUser.password);
 
     pwExpect(page).toHaveURL(cardsPage.url);
   });
@@ -53,10 +64,9 @@ describe("Auth page ", () => {
   it("if user is not registered and try to login should be printed the error", async () => {
     const requestPromise = page.waitForRequest("**/api/token*");
 
-    await authPage.login(loginUser.username, loginUser.password);
+    await authPage.login(loginUser.userName, loginUser.password);
 
     const req = await requestPromise;
-
 
     const reqBodyData = req.postData();
 
@@ -84,7 +94,7 @@ describe("Auth page ", () => {
     const recoveryPage = new RecoveryPage(page);
 
     await authPage.passwordRecoveryLink.click();
-    
+
     pwExpect(page).toHaveURL(recoveryPage.url);
   });
 });
