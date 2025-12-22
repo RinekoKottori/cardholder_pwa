@@ -1,10 +1,17 @@
 export const authorizedUser = {
-    email: "test@test.com",
-    username: "test",
-    password: "test",
-}
+  email: "test@test.com",
+  userName: "test",
+  password: "test",
+};
 
 export const loginUser = {
-    username: "Frodo",
-    password: "Beggins",
-}
+  userName: "Frodo",
+  password: "Beggins",
+};
+
+export const registrateUser = {
+  email: "test@test.com",
+  userName: "Frodo",
+  password: "Beggins",
+  passwordConfirm: "Beggins",
+};
