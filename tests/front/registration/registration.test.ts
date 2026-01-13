@@ -47,7 +47,7 @@ describe("Registration page ", () => {
     const authPage = new AuthPage(page);
     const requestPromise = page.waitForRequest("**/api/user*");
 
-    /* Imitated login response */
+    /* Imitated registation response */
     await page.route("**/api/user*", (route) => {
       route.fulfill({
         status: 201,
@@ -81,5 +81,6 @@ describe("Registration page ", () => {
   });
 
   /* TODO: Есть ли какое-то поведение на фронте на уже зарегистрированного пользователя? Если да, то какие данные должны быть уникальными? 
-  Дописать положительно-негативные тесты в соответствии с ответом */
+  Дописать положительно-негативные тесты в соответствии с ответом  Username or email  - uniq - 400 Bad Request
+  */
 });
