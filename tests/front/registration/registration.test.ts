@@ -80,6 +80,47 @@ describe("Registration page ", () => {
     pwExpect(page).toHaveURL(authPage.url);
   });
 
+   it("click on registrate button with valid credentials should registrate a user", async () => {
+    const authPage = new AuthPage(page);
+    const requestPromise = page.waitForRequest("**/api/user*");
+
+    /* Imitated registation response */
+    await page.route("**/api/user*", (route) => {
+      route.fulfill({
+        status: 400,
+        contentType: "application/json",
+      });
+    });
+
+    await registrationPage.register(
+      registrateUser.email,
+      registrateUser.userName,
+      registrateUser.password,
+      registrateUser.passwordConfirm,
+    );
+
+    const req = await requestPromise;
+
+    const reqBodyData = req.postDataJSON();
+
+    pwExpect(req.url()).toContain("/api/user");
+    pwExpect(req.method()).toBe("POST");
+
+    pwExpect(reqBodyData).toContainEqual({
+      confirm_password: registrateUser.passwordConfirm,
+      email: registrateUser.email,
+      password: registrateUser.password,
+      username: registrateUser.userName,
+    });
+
+    pwExpect(registrationPage.errorMassageDublicate).toBeVisible;
+    pwExpect(registrationPage.errorMassageDublicate).toContainText(
+      "Username or email already taken",
+    );
+    pwExpect(page).toHaveURL(registrationPage.url);
+  });
+
+
   /* TODO: Есть ли какое-то поведение на фронте на уже зарегистрированного пользователя? Если да, то какие данные должны быть уникальными? 
   Дописать положительно-негативные тесты в соответствии с ответом  Username or email  - uniq - 400 Bad Request
   */

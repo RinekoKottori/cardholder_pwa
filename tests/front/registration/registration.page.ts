@@ -7,6 +7,7 @@ export enum ERegistrationLocators {
   USER_CONFIRM_PASSWORD_INPUT = "[id='confirm-password']",
   REGISTER_BUTTON = "[data-testId='regisetry-button']",
   EXIST_ACCOUNT_LINK = "[data-testId='already-have-account-link']",
+  ERROR_MASSAGE_DUBLICATE = "[id='mat-snack-bar-container-live-6']",
 }
 
 /* path: /register */
@@ -44,6 +45,10 @@ export class RegistrationrPage extends BasePage {
 
   get existAccountLink() {
     return this.page.locator(ERegistrationLocators.EXIST_ACCOUNT_LINK);
+  }
+
+  get errorMassageDublicate() {
+    return this.page.locator(ERegistrationLocators.ERROR_MASSAGE_DUBLICATE);
   }
 
   async register(username: string, email: string, password: string,  passwordConfirm: string) {
