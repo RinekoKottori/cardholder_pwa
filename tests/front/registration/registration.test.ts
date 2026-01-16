@@ -80,8 +80,8 @@ describe("Registration page ", () => {
     pwExpect(page).toHaveURL(authPage.url);
   });
 
-   it("click on registrate button with valid credentials should registrate a user", async () => {
-    const authPage = new AuthPage(page);
+  // user name or email
+   it("shows an error after register click with existing credentials", async () => {
     const requestPromise = page.waitForRequest("**/api/user*");
 
     /* Imitated registation response */
@@ -119,9 +119,4 @@ describe("Registration page ", () => {
     );
     pwExpect(page).toHaveURL(registrationPage.url);
   });
-
-
-  /* TODO: Есть ли какое-то поведение на фронте на уже зарегистрированного пользователя? Если да, то какие данные должны быть уникальными? 
-  Дописать положительно-негативные тесты в соответствии с ответом  Username or email  - uniq - 400 Bad Request
-  */
 });
