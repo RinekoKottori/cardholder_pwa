@@ -1,49 +1,47 @@
-import "../vitest.front.setup";
-import { describe, beforeEach, it } from "vitest";
-import { expect as pwExpect } from "@playwright/test";
-import { RegistrationrPage } from "./registration.page";
+import { expect as pwExpect,test,  } from "@playwright/test";
+import { RegistrationPage } from "./registration.page";
 import { registrateUser } from "../_shared/credits";
 import { responseRegisterOwner } from "../_shared/mock_responses";
 import { AuthPage } from "../auth/auth.page";
 
-describe("Registration page ", () => {
-  let registrationPage: RegistrationrPage;
+test.describe("Registration page ", () => {
+  let registrationPage: RegistrationPage;
 
-  beforeEach(async () => {
-    registrationPage = new RegistrationrPage(page);
+  test.beforeEach(async ({page}) => {
+    registrationPage = new RegistrationPage(page);
 
     await registrationPage.open();
   });
 
-  it("title is correct", async () => {
+  test("title is correct", async () => {
     pwExpect(registrationPage.title).toContainText("Новый пользователь");
   });
 
-  it("email input is visible", async () => {
+  test("email input is visible", async () => {
     pwExpect(registrationPage.emailInput).toBeVisible;
   });
 
-  it("name input is visible", async () => {
+  test("name input is visible", async () => {
     pwExpect(registrationPage.userNameInput).toBeVisible;
   });
 
-  it("password input is visible", async () => {
+  test("password input is visible", async () => {
     pwExpect(registrationPage.passwordInput).toBeVisible;
   });
 
-  it("confirm password input is visible", async () => {
+  test("confirm password input is visible", async () => {
     pwExpect(registrationPage.confirmPasswordInput).toBeVisible;
   });
 
-  it("registration button is visible", async () => {
+  test("registration button is visible", async () => {
     pwExpect(registrationPage.registerButton).toBeVisible;
   });
 
-  it("already have an account button is visible", async () => {
+  test("already have an account button is visible", async () => {
     pwExpect(registrationPage.existAccountLink).toBeVisible;
   });
 
-  it("click on registrate button with valid credentials should registrate a user", async () => {
+  test("click on registrate button with valid credentials should registrate a user", async ({page}) => {
     const authPage = new AuthPage(page);
     const requestPromise = page.waitForRequest("**/api/user*");
 
@@ -81,7 +79,7 @@ describe("Registration page ", () => {
   });
 
   // user name or email
-   it("shows an error after register click with existing credentials", async () => {
+  test("shows an error after register click with existing credentials", async ({page}) => {
     const requestPromise = page.waitForRequest("**/api/user*");
 
     /* Imitated registation response */
