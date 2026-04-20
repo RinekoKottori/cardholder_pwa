@@ -1,0 +1,8 @@
+{
+  "name": "tests-back",
+  "private": true,
+  "scripts": {
+    "test": "vitest --project back"
+  },
+  "devDependencies": {}
+}

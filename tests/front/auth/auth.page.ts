@@ -19,28 +19,28 @@ export class AuthPage extends BasePage {
   }
 
   async login(username: string, password: string) {
-    await page.locator(EAuthLocators.USER_NAME_INPUT).fill(username);
-    await page.locator(EAuthLocators.USER_PASSWORD_INPUT).fill(password);
-    await page.locator(EAuthLocators.SUBMIT_BUTTON).click();
+    await this.page.locator(EAuthLocators.USER_NAME_INPUT).fill(username);
+    await this.page.locator(EAuthLocators.USER_PASSWORD_INPUT).fill(password);
+    await this.page.locator(EAuthLocators.SUBMIT_BUTTON).click();
   }
 
   get loginButton() {
-    return page.locator(EAuthLocators.SUBMIT_BUTTON);
+    return this.page.locator(EAuthLocators.SUBMIT_BUTTON);
   }
 
   get registerLink() {
-    return page.locator(EAuthLocators.REGISTER_LINK);
+    return this.page.locator(EAuthLocators.REGISTER_LINK);
   }
 
   get passwordRecoveryLink() {
-    return page.locator(EAuthLocators.RECOVERY_PASSWORD_LINK);
+    return this.page.locator(EAuthLocators.RECOVERY_PASSWORD_LINK);
   }
 
   get title() {
-    return page.locator(EAuthLocators.TITLE);
+    return this.page.locator(EAuthLocators.TITLE);
   }
 
   get authError() {
-    return page.locator(EAuthLocators.AUTH_ERROR);
+    return this.page.locator(EAuthLocators.AUTH_ERROR);
   }
 }

@@ -12,7 +12,7 @@ export enum ERegistrationLocators {
 
 /* path: /register */
 
-export class RegistrationrPage extends BasePage {
+export class RegistrationPage extends BasePage {
   readonly path = "/register";
 
   override async open() {

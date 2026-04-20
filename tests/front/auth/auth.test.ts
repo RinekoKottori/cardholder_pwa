@@ -1,43 +1,41 @@
-import "../vitest.front.setup";
-import { describe, beforeEach, it } from "vitest";
 import { AuthPage } from "./auth.page";
-import { expect as pwExpect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { CardsPage } from "../cards/cards.page";
 import { loginUser } from "../_shared/credits";
 import { responseRegisterOwner } from "../_shared/mock_responses";
-import { RegistrationrPage } from "../registration/registration.page";
+import { RegistrationPage } from "../registration/registration.page";
 import { RecoveryPage } from "../recovery/recovery.page";
 
-describe("Auth page ", () => {
+test.describe("Auth page ", () => {
   let authPage: AuthPage;
 
-  beforeEach(async () => {
+  test.beforeEach(async ({page}) => {
     authPage = new AuthPage(page);
 
     await authPage.open();
   });
 
-  it("should open", async () => {
-    pwExpect(page).toHaveURL(authPage.url);
+  test("should open", async ({page}) => {
+    expect(page).toHaveURL(authPage.url);
   });
 
-  it("should have title", async () => {
-    pwExpect(authPage.title).toHaveText("Добро пожаловать");
+  test("should have title", async () => {
+    expect(authPage.title).toHaveText("Welcome");
   });
 
-  it("should have login button", async () => {
-    pwExpect(authPage.loginButton).toBeVisible();
+  test("should have login button", async () => {
+    expect(authPage.loginButton).toBeVisible();
   });
 
-  it("should have register button", async () => {
-    pwExpect(authPage.registerLink).toBeVisible();
+  test("should have register button", async () => {
+    expect(authPage.registerLink).toBeVisible();
   });
 
-  it("should have forgot password button", async () => {
-    pwExpect(authPage.passwordRecoveryLink).toBeVisible();
+  test("should have forgot password button", async () => {
+    expect(authPage.passwordRecoveryLink).toBeVisible();
   });
 
-  it("click on login button with valid credentials should login", async () => {
+  test("click on login button with valid credentials should login", async ({page}) => {
     const cardsPage = new CardsPage(page);
 
     /* Imitated login response */
@@ -58,10 +56,10 @@ describe("Auth page ", () => {
 
     await authPage.login(loginUser.userName, loginUser.password);
 
-    pwExpect(page).toHaveURL(cardsPage.url);
+    expect(page).toHaveURL(cardsPage.url);
   });
 
-  it("if user is not registered and try to login should be printed the error", async () => {
+  test("if user is not registered and try to login should be printed the error", async ({page}) => {
     const requestPromise = page.waitForRequest("**/api/token*");
 
     await authPage.login(loginUser.userName, loginUser.password);
@@ -70,31 +68,31 @@ describe("Auth page ", () => {
 
     const reqBodyData = req.postData();
 
-    pwExpect(req.url()).toContain("/api/token");
-    pwExpect(req.method()).toBe("POST");
+    expect(req.url()).toContain("/api/token");
+    expect(req.method()).toBe("POST");
 
-    pwExpect(reqBodyData).toContain("grant_type");
-    pwExpect(reqBodyData).toContain("username");
-    pwExpect(reqBodyData).toContain("password");
-    pwExpect(reqBodyData).toContain("Frodo");
-    pwExpect(reqBodyData).toContain("Beggins");
+    expect(reqBodyData).toContain("grant_type");
+    expect(reqBodyData).toContain("username");
+    expect(reqBodyData).toContain("password");
+    expect(reqBodyData).toContain("Frodo");
+    expect(reqBodyData).toContain("Beggins");
 
-    pwExpect(authPage.authError).toBeVisible;
+    expect(authPage.authError).toBeVisible;
   });
 
-  it("click on new authorization button should redirect to new authorization page", async () => {
-    const registerPage = new RegistrationrPage(page);
+  test("click on new authorization button should redirect to new authorization page", async ({page}) => {
+    const registerPage = new RegistrationPage(page);
 
     await authPage.registerLink.click();
 
-    pwExpect(page).toHaveURL(registerPage.url);
+    expect(page).toHaveURL(registerPage.url);
   });
 
-  it("click on recovery button shold redirect to recovery page", async () => {
+  test("click on recovery button shold redirect to recovery page", async ({page}) => {
     const recoveryPage = new RecoveryPage(page);
 
     await authPage.passwordRecoveryLink.click();
 
-    pwExpect(page).toHaveURL(recoveryPage.url);
+    expect(page).toHaveURL(recoveryPage.url);
   });
 });

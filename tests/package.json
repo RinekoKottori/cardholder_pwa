@@ -1,36 +1,31 @@
 {
-  "name": "package-test.json",
-  "version": "1.0.0",
-  "description": "integration tests package",
-  "main": "index.js",
+  "name": "tests",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back"
+  ],
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "test": "npm run test:front && npm run test:back",
-    "test:front": "cross-env HEADLESS=true npx vitest --config tests/front/vitest.front.config.ts",
-    "test:back": "npx vitest --config vitest.back.config.ts"
+    "test:front": "playwright test --config ./front/playwright.config.ts",
+    "test:back": "vitest --project back",
+    "test:front:ui": "playwright test --ui --config ./front/playwright.config.ts",
+    "test:front:debug": "playwright test --debug --config ./front/playwright.config.ts"
   },
-  "author": "Rina Savina",
-  "license": "ISC",
+  
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
-    "@types/wait-on": "^5.3.4",
-    "@typescript-eslint/eslint-plugin": "^8.47.0",
-    "@typescript-eslint/parser": "^8.47.0",
-    "eslint": "^9.39.1",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "playwright": "^1.56.1",
-    "prettier": "^3.6.2",
-    "ts-node": "^10.9.2",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0",
+    "@vitest/browser": "^4.1.4",
+    "@vitest/coverage-v8": "^4.1.4",
+    "allure-vitest": "^3.7.1",
+    "dotenv": "^17.4.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.13",
-    "wait-on": "^9.0.3"
+    "vitest": "^4.1.4"
   },
-  "dependencies": {
-    "@vitest/browser-playwright": "^4.0.14",
-    "dotenv": "^17.2.3"
-  }
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
