@@ -1,49 +1,57 @@
-import { expect as pwExpect,test,  } from "@playwright/test";
+import { expect as pwExpect, test, } from "@playwright/test";
 import { RegistrationPage } from "./registration.page";
 import { registrateUser } from "../_shared/credits";
-import { responseRegisterOwner } from "../_shared/mock_responses";
+import { responseRegisterOwner, responseToken } from "../_shared/mock_responses";
 import { AuthPage } from "../auth/auth.page";
 
 test.describe("Registration page ", () => {
   let registrationPage: RegistrationPage;
 
-  test.beforeEach(async ({page}) => {
+  test.beforeEach(async ({ page }) => {
     registrationPage = new RegistrationPage(page);
 
     await registrationPage.open();
   });
 
   test("title is correct", async () => {
-    pwExpect(registrationPage.title).toContainText("Новый пользователь");
+    await pwExpect(registrationPage.title).toContainText("New account");
   });
 
   test("email input is visible", async () => {
-    pwExpect(registrationPage.emailInput).toBeVisible;
+    await pwExpect(registrationPage.emailInput).toBeVisible();
   });
 
   test("name input is visible", async () => {
-    pwExpect(registrationPage.userNameInput).toBeVisible;
+    await pwExpect(registrationPage.userNameInput).toBeVisible();
   });
 
   test("password input is visible", async () => {
-    pwExpect(registrationPage.passwordInput).toBeVisible;
+    await pwExpect(registrationPage.passwordInput).toBeVisible();
   });
 
   test("confirm password input is visible", async () => {
-    pwExpect(registrationPage.confirmPasswordInput).toBeVisible;
+    await pwExpect(registrationPage.confirmPasswordInput).toBeVisible();
   });
 
   test("registration button is visible", async () => {
-    pwExpect(registrationPage.registerButton).toBeVisible;
+    await pwExpect(registrationPage.registerButton).toBeVisible();
   });
 
   test("already have an account button is visible", async () => {
-    pwExpect(registrationPage.existAccountLink).toBeVisible;
+    await pwExpect(registrationPage.existAccountLink).toBeVisible();
   });
 
-  test("click on registrate button with valid credentials should registrate a user", async ({page}) => {
+  test("click on registrate button with valid credentials should registrate a user", async ({ page }) => {
     const authPage = new AuthPage(page);
     const requestPromise = page.waitForRequest("**/api/user*");
+
+    /* Imitated login response */
+    await page.route("**/api/token*", (route) => {
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify(responseToken),
+      });
+    });
 
     /* Imitated registation response */
     await page.route("**/api/user*", (route) => {
@@ -65,21 +73,21 @@ test.describe("Registration page ", () => {
 
     const reqBodyData = req.postDataJSON();
 
-    pwExpect(req.url()).toContain("/api/user");
-    pwExpect(req.method()).toBe("POST");
+    await pwExpect(req.url()).toContain("/api/user");
+    await pwExpect(req.method()).toBe("POST");
 
-    pwExpect(reqBodyData).toContainEqual({
+    await pwExpect(reqBodyData).toContainEqual({
       confirm_password: registrateUser.passwordConfirm,
       email: registrateUser.email,
       password: registrateUser.password,
       username: registrateUser.userName,
     });
 
-    pwExpect(page).toHaveURL(authPage.url);
+    await pwExpect(page).toHaveURL(authPage.url);
   });
 
   // user name or email
-  test("shows an error after register click with existing credentials", async ({page}) => {
+  test("shows an error after register click with existing credentials", async ({ page }) => {
     const requestPromise = page.waitForRequest("**/api/user*");
 
     /* Imitated registation response */
@@ -101,20 +109,20 @@ test.describe("Registration page ", () => {
 
     const reqBodyData = req.postDataJSON();
 
-    pwExpect(req.url()).toContain("/api/user");
-    pwExpect(req.method()).toBe("POST");
+    await pwExpect(req.url()).toContain("/api/user");
+    await pwExpect(req.method()).toBe("POST");
 
-    pwExpect(reqBodyData).toContainEqual({
+    await pwExpect(reqBodyData).toContainEqual({
       confirm_password: registrateUser.passwordConfirm,
       email: registrateUser.email,
       password: registrateUser.password,
       username: registrateUser.userName,
     });
 
-    pwExpect(registrationPage.errorMassageDublicate).toBeVisible;
-    pwExpect(registrationPage.errorMassageDublicate).toContainText(
+    await pwExpect(registrationPage.errorMassageDublicate).toBeVisible();
+    await pwExpect(registrationPage.errorMassageDublicate).toContainText(
       "Username or email already taken",
     );
-    pwExpect(page).toHaveURL(registrationPage.url);
+    await pwExpect(page).toHaveURL(registrationPage.url);
   });
 });
