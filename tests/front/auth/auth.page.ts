@@ -1,12 +1,12 @@
 import { BasePage } from "../_shared/base.page";
 export enum EAuthLocators {
-  TITLE = "[class^='auth-form'] > [h1]",
+  TITLE = "[class^='auth-form'] h1",
   USER_NAME_INPUT = "[id='login_username']",
   USER_PASSWORD_INPUT = "[id='password']",
   SUBMIT_BUTTON = "[type='submit']",
   REGISTER_LINK = "[data-testId='register-link']",
   RECOVERY_PASSWORD_LINK = "[data-testId='password-recovery-link']",
-  AUTH_ERROR = "[class='mat-snack-bar-container-live-2']",
+  AUTH_ERROR = ".mat-snack-error .mdc-snackbar__label",
 }
 
 /* path: /auth */

@@ -9,7 +9,7 @@ export enum ERecoveryPageLocators {
 /* path: /register */
 
 export class RecoveryPage extends BasePage {
-  readonly path = "/register";
+  readonly path = "/password-recovery/request";
 
   override async open() {
     await this.page.goto(this.url);
