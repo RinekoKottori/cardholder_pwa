@@ -1,10 +1,11 @@
-import { BasePage } from "../_shared/base.page";
+import { BasePage } from "../../_shared/base.page";
 export enum ERecoveryPageLocators {
   TITLE = "[class='password-recovery-request-header']",
   USER_EMAIL_INPUT = "[id='user_email']",
   SUBMIT_BUTTON = "[data-testid='password-recovery-request-button']",
-  REJECT_BUTTON = "[data-testid='password-recovery-cancel-link']",
-  GOT_CODE_BUTTON = "[routerLink='/password-recovery/submit']",
+  CANCEL_BUTTON = "[data-testid='password-recovery-cancel-link']",
+  GOT_CODE_BUTTON = "[data-testid='password-recovery-link']",
+  RECOVERY_INFO_POPUP = ".mdc-snackbar__label",
 }
 
 export class RecoveryPage extends BasePage {
@@ -30,8 +31,14 @@ export class RecoveryPage extends BasePage {
     return this.page.locator(ERecoveryPageLocators.SUBMIT_BUTTON);
   }
 
-  get rejectButton() {
-    return this.page.locator(ERecoveryPageLocators.REJECT_BUTTON);
+  get cancelButton() {
+    return this.page.locator(ERecoveryPageLocators.CANCEL_BUTTON);
+  }
+
+  get recoveryInfoPopup() {
+    return this.page.locator(ERecoveryPageLocators.RECOVERY_INFO_POPUP).filter({
+      hasText: "If the user exists, instructions will be sent to email.",
+    });
   }
 
   async recoverPassword(email: string) {

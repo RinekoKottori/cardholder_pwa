@@ -4,7 +4,7 @@ import { CardsPage } from "../cards/cards.page";
 import { loginUser } from "../_shared/credits";
 import { responseRegisterOwner, responseToken } from "../_shared/mock_responses";
 import { RegistrationPage } from "../registration/registration.page";
-import { RecoveryPage } from "../recovery/recovery.page";
+import { RecoveryPage } from "../recovery/request/recovery.page";
 import { mockPublicRequests } from "../_shared/mock_util_request";
 
 test.describe("Auth page ", () => {
