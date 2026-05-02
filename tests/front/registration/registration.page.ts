@@ -7,7 +7,7 @@ export enum ERegistrationLocators {
   USER_CONFIRM_PASSWORD_INPUT = "[id='confirm-password']",
   REGISTER_BUTTON = "[data-testId='regisetry-button']",
   EXIST_ACCOUNT_LINK = "[data-testId='already-have-account-link']",
-  ERROR_MASSAGE_DUBLICATE = "[id='mat-snack-bar-container-live-6']",
+  ERROR_MASSAGE_DUBLICATE = ".mat-snack-error .mdc-snackbar__label",
 }
 
 /* path: /register */

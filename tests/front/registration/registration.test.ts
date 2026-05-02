@@ -3,14 +3,30 @@ import { RegistrationPage } from "./registration.page";
 import { registrateUser } from "../_shared/credits";
 import { responseRegisterOwner, responseToken } from "../_shared/mock_responses";
 import { AuthPage } from "../auth/auth.page";
+import { mockPublicRequests } from "../_shared/mock_util_request";
 
 test.describe("Registration page ", () => {
   let registrationPage: RegistrationPage;
+  const validRegistrateUser = {
+    ...registrateUser,
+    password: "Beggins1",
+    passwordConfirm: "Beggins1",
+  };
 
   test.beforeEach(async ({ page }) => {
     registrationPage = new RegistrationPage(page);
 
+    await mockPublicRequests({ page });
+    
     await registrationPage.open();
+
+    /* Imitated login response */
+    await page.route("**/api/token*", (route) => {
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify(responseToken),
+      });
+    });
   });
 
   test("title is correct", async () => {
@@ -43,44 +59,38 @@ test.describe("Registration page ", () => {
 
   test("click on registrate button with valid credentials should registrate a user", async ({ page }) => {
     const authPage = new AuthPage(page);
-    const requestPromise = page.waitForRequest("**/api/user*");
-
-    /* Imitated login response */
-    await page.route("**/api/token*", (route) => {
-      route.fulfill({
-        status: 200,
-        body: JSON.stringify(responseToken),
-      });
-    });
 
     /* Imitated registation response */
-    await page.route("**/api/user*", (route) => {
-      route.fulfill({
+    await page.route("**/api/user*", async (route) => {
+      await route.fulfill({
         status: 201,
         contentType: "application/json",
         body: JSON.stringify(responseRegisterOwner),
       });
     });
 
-    await registrationPage.register(
-      registrateUser.email,
-      registrateUser.userName,
-      registrateUser.password,
-      registrateUser.passwordConfirm,
-    );
-
-    const req = await requestPromise;
+    const [req] = await Promise.all([
+      page.waitForRequest((request) =>
+        request.url().includes("/api/user") && request.method() === "POST",
+      ),
+      registrationPage.register(
+        validRegistrateUser.userName,
+        validRegistrateUser.email,
+        validRegistrateUser.password,
+        validRegistrateUser.passwordConfirm,
+      ),
+    ]);
 
     const reqBodyData = req.postDataJSON();
 
     await pwExpect(req.url()).toContain("/api/user");
     await pwExpect(req.method()).toBe("POST");
 
-    await pwExpect(reqBodyData).toContainEqual({
-      confirm_password: registrateUser.passwordConfirm,
-      email: registrateUser.email,
-      password: registrateUser.password,
-      username: registrateUser.userName,
+    await pwExpect(reqBodyData).toMatchObject({
+      confirm_password: validRegistrateUser.passwordConfirm,
+      email: validRegistrateUser.email,
+      password: validRegistrateUser.password,
+      username: validRegistrateUser.userName,
     });
 
     await pwExpect(page).toHaveURL(authPage.url);
@@ -88,41 +98,47 @@ test.describe("Registration page ", () => {
 
   // user name or email
   test("shows an error after register click with existing credentials", async ({ page }) => {
-    const requestPromise = page.waitForRequest("**/api/user*");
 
     /* Imitated registation response */
-    await page.route("**/api/user*", (route) => {
-      route.fulfill({
+    await page.route("**/api/user*", async (route) => {
+      await route.fulfill({
         status: 400,
-        contentType: "application/json",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ "detail": "Username or email is already taken" }),
       });
     });
 
-    await registrationPage.register(
-      registrateUser.email,
-      registrateUser.userName,
-      registrateUser.password,
-      registrateUser.passwordConfirm,
-    );
-
-    const req = await requestPromise;
+    const [req] = await Promise.all([
+      page.waitForRequest((request) =>
+        request.url().includes("/api/user") && request.method() === "POST",
+      ),
+      registrationPage.register(
+        validRegistrateUser.userName,
+        validRegistrateUser.email,
+        validRegistrateUser.password,
+        validRegistrateUser.passwordConfirm,
+      ),
+    ]);
 
     const reqBodyData = req.postDataJSON();
 
     await pwExpect(req.url()).toContain("/api/user");
     await pwExpect(req.method()).toBe("POST");
 
-    await pwExpect(reqBodyData).toContainEqual({
-      confirm_password: registrateUser.passwordConfirm,
-      email: registrateUser.email,
-      password: registrateUser.password,
-      username: registrateUser.userName,
+    await pwExpect(reqBodyData).toMatchObject({
+      confirm_password: validRegistrateUser.passwordConfirm,
+      email: validRegistrateUser.email,
+      password: validRegistrateUser.password,
+      username: validRegistrateUser.userName,
     });
 
-    await pwExpect(registrationPage.errorMassageDublicate).toBeVisible();
-    await pwExpect(registrationPage.errorMassageDublicate).toContainText(
-      "Username or email already taken",
-    );
+    const duplicateError = registrationPage.errorMassageDublicate.filter({
+      hasText: "Request error: 400 Bad Request",
+    });
+
+    await pwExpect(duplicateError).toBeVisible();
     await pwExpect(page).toHaveURL(registrationPage.url);
   });
 });
