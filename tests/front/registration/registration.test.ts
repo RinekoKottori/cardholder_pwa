@@ -16,8 +16,8 @@ test.describe("Registration page ", () => {
   test.beforeEach(async ({ page }) => {
     registrationPage = new RegistrationPage(page);
 
-    await mockPublicRequests({ page });
-    
+    await mockPublicRequests(page);
+
     await registrationPage.open();
 
     /* Imitated login response */

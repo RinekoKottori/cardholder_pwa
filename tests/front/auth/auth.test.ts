@@ -13,7 +13,7 @@ test.describe("Auth page ", () => {
   test.beforeEach(async ({ page }) => {
     authPage = new AuthPage(page);
 
-    await mockPublicRequests({ page });
+    await mockPublicRequests(page);
     await authPage.open();
   });
 
