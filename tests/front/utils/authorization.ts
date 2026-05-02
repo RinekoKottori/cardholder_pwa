@@ -8,7 +8,7 @@ export const authorization = async (page: Page)=>{
     const registerPage = new RegistrationPage(page);
 
     await authPage.registerLink.click();
-    await registerPage.register(user.email, user.userName, user.password, user.password);
+    await registerPage.register(user.userName, user.email, user.password, user.password);
     
     await authPage.open();
 };
