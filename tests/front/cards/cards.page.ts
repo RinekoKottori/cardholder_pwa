@@ -3,8 +3,6 @@ export enum ECardsLocators {
   TITLE = "",
 }
 
-/* path: /cards */
-
 export class CardsPage extends BasePage {
   readonly path = "/cards";
 

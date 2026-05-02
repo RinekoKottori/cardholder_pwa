@@ -9,8 +9,6 @@ export enum EAuthLocators {
   AUTH_ERROR = ".mat-snack-error .mdc-snackbar__label",
 }
 
-/* path: /auth */
-
 export class AuthPage extends BasePage {
   readonly path = "/auth";
 

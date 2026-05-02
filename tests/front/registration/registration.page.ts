@@ -10,8 +10,6 @@ export enum ERegistrationLocators {
   ERROR_MASSAGE_DUBLICATE = ".mat-snack-error .mdc-snackbar__label",
 }
 
-/* path: /register */
-
 export class RegistrationPage extends BasePage {
   readonly path = "/register";
 
