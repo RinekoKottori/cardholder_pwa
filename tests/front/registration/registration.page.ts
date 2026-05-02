@@ -5,8 +5,8 @@ export enum ERegistrationLocators {
   USER_EMAIL_INPUT = "[id='user_email']",
   USER_PASSWORD_INPUT = "[id='password']",
   USER_CONFIRM_PASSWORD_INPUT = "[id='confirm-password']",
-  REGISTER_BUTTON = "[data-testId='regisetry-button']",
-  EXIST_ACCOUNT_LINK = "[data-testId='already-have-account-link']",
+  REGISTER_BUTTON = "[data-testid='register-button']",
+  EXIST_ACCOUNT_LINK = "[data-testid='already-have-account-link']",
   ERROR_MASSAGE_DUBLICATE = ".mat-snack-error .mdc-snackbar__label",
 }
 
